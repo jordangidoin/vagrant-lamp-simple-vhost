@@ -5,5 +5,6 @@ Debian 7.8 Vagrant setup for development. The intention of this repo is to have 
 ## Requirements
 
 * VirtualBox - Free virtualization software [Downloads](https://www.virtualbox.org/wiki/Downloads)
-* Vagrant (Tested with Vagrant v 1.2.1)- Tool for working with virtualbox images [Vagrant Home](https://www.vagrantup.com), click on 'download now link'
+* Vagrant (Tested with Vagrant v 1.2.1) - Tool for working with virtualbox images [Vagrant Home](https://www.vagrantup.com), click on 'download now link'
+* For Windows User : WinNFSd - https://github.com/winnfsd/vagrant-winnfsd
 * Git - Source Control Management [Downloads](http://git-scm.com/downloads)

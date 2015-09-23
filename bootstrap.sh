@@ -33,14 +33,26 @@ DEBIAN_FRONTEND=noninteractive apt-get --yes --force-yes install \
 
 echo " -- Configure... -- "
 php5enmod mcrypt
-ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load
+
+if [ ! -f /etc/apache2/mods-enabled/rewrite.load ]; then
+    ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load
+fi
+
 cat /var/vagrant_config_files/apache2/default | tee /etc/apache2/sites-available/default
 sed -i '/display_errors = Off/c display_errors = On' /etc/php5/apache2/php.ini
 sed -i '/error_reporting = E_ALL & ~E_DEPRECATED/c error_reporting = E_ALL | E_STRICT' /etc/php5/apache2/php.ini
 sed -i '/html_errors = Off/c html_errors = On' /etc/php5/apache2/php.ini
 
-echo " -- SET CACHE FOLDER... -- "
-mkdir /var/www/cache && chmod -R 775 /var/www/cache  && chown vagrant:www-data /var/www/cache
+if [ ! -d /var/www/cache ]; then
+    echo " -- SET CACHE FOLDER... -- "
+    mkdir /var/www/cache && chmod -R 775 /var/www/cache  && chown vagrant:www-data /var/www/cache
+fi
+
+if [ ! -f /usr/local/bin/composer ]; then
+    echo " -- COMPOSER... -- "
+    curl -sS https://getcomposer.org/installer | php
+    mv composer.phar /usr/local/bin/composer
+fi
 
 echo " -- Restarting apache2... -- "
 service apache2 restart

@@ -9,10 +9,8 @@ VAGRANTFILE_API_VERSION = "2"
 # -----------------------------
 box_name             = "bento/debian-7.8"
 box_memory           = 1024
-box_cpus             = 1
+box_cpus             = 2
 box_cpu_max_exec_cap = "100"
-
-ip_address = "192.168.10.10"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # All Vagrant configuration is done here. The most common configuration
@@ -43,11 +41,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   config.vm.network "forwarded_port", guest: 80, host: 8888
-  config.vm.network "forwarded_port", guest: 3306, host: 3307
-
-  # Create a private network, which allows host-only access to the machine
-  # using a specific IP.
-  config.vm.network "private_network", ip: ip_address
+  config.vm.network "private_network", type: "dhcp"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -63,11 +57,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
-  config.vm.synced_folder "C:/sites", "/var/www/vagrant",
-    owner: "vagrant",
-    group: "www-data",
-    mount_options: ["dmode=775,fmode=664"],
-    create: true
-  config.vm.synced_folder "./vagrant_config_files", "/var/vagrant_config_files", create: true
+  config.vm.synced_folder "C:/sites", "/var/www/vagrant", :nfs => true, :mount_options => ['nfsvers=3']
+  config.vm.synced_folder "./vagrant_config_files", "/var/vagrant_config_files",  create: true
 
 end
