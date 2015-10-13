@@ -11,6 +11,7 @@ box_name             = "bento/debian-7.8"
 box_memory           = 1024
 box_cpus             = 2
 box_cpu_max_exec_cap = "100"
+ip_address = "192.168.10.10"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # All Vagrant configuration is done here. The most common configuration
@@ -36,12 +37,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Chef or Puppet would be classier, but sometimes a shell script does the trick:
   config.vm.provision :shell, path: "bootstrap.sh"
+  config.vm.provision :shell, run: "always", :path => "load.sh"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   config.vm.network "forwarded_port", guest: 80, host: 8888
-  config.vm.network "private_network", type: "dhcp"
+  config.vm.network "forwarded_port", guest: 1080, host: 1080 #mailcatcher
+  config.vm.network "private_network", ip: ip_address
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on

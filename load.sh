@@ -1,0 +1,1 @@
+ service mailcatcher start

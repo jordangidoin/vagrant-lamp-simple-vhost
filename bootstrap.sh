@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 echo " -- Updating System... -- "
 apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get --yes --force-yes install debian-archive-keyring
@@ -29,6 +27,7 @@ DEBIAN_FRONTEND=noninteractive apt-get --yes --force-yes install \
     git \
     vim \
     emacs \
+    build-essential libsqlite3-dev ruby1.9.1-dev \
     screen
 
 echo " -- Configure... -- "
@@ -42,6 +41,11 @@ cat /var/vagrant_config_files/apache2/default | tee /etc/apache2/sites-available
 sed -i '/display_errors = Off/c display_errors = On' /etc/php5/apache2/php.ini
 sed -i '/error_reporting = E_ALL & ~E_DEPRECATED/c error_reporting = E_ALL | E_STRICT' /etc/php5/apache2/php.ini
 sed -i '/html_errors = Off/c html_errors = On' /etc/php5/apache2/php.ini
+sed -i '/memory_limit = 128M/c memory_limit = 1024M' /etc/php5/apache2/php.ini
+sed -i '/max_execution_time = 30/c max_execution_time = 160' /etc/php5/apache2/php.ini
+sed -i '/upload_max_filesize = 2M/c upload_max_filesize = 200M' /etc/php5/apache2/php.ini
+sed -i '/post_max_size = 8M/c post_max_size = 208M' /etc/php5/apache2/php.ini
+sed -i '/;sendmail_path =/c sendmail_path = "/usr/local/bin/catchmail"' /etc/php5/apache2/php.ini
 
 if [ ! -d /var/www/cache ]; then
     echo " -- SET CACHE FOLDER... -- "
@@ -52,6 +56,15 @@ if [ ! -f /usr/local/bin/composer ]; then
     echo " -- COMPOSER... -- "
     curl -sS https://getcomposer.org/installer | php
     mv composer.phar /usr/local/bin/composer
+fi
+
+# Install Mailcatcher
+if [ ! -f /etc/init.d/mailcatcher ]; then
+    echo "Installing mailcatcher"
+    cp /var/vagrant_config_files/init.d/mailcatcher /etc/init.d/
+    chmod +x /etc/init.d/mailcatcher
+    gem install mailcatcher -v 0.5.12 --no-ri --no-rdoc
+    service mailcatcher start
 fi
 
 echo " -- Restarting apache2... -- "
