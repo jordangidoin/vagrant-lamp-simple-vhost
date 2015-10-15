@@ -28,6 +28,7 @@ DEBIAN_FRONTEND=noninteractive apt-get --yes --force-yes install \
     vim \
     emacs \
     build-essential libsqlite3-dev ruby1.9.1-dev \
+    dos2unix \
     screen
 
 echo " -- Configure... -- "
@@ -61,7 +62,8 @@ fi
 # Install Mailcatcher
 if [ ! -f /etc/init.d/mailcatcher ]; then
     echo "Installing mailcatcher"
-    cp /var/vagrant_config_files/init.d/mailcatcher /etc/init.d/
+    #dos2unix permet de convertir le retour \r en unix format
+    dos2unix < /var/vagrant_config_files/init.d/mailcatcher > /etc/init.d/mailcatcher
     chmod +x /etc/init.d/mailcatcher
     gem install mailcatcher -v 0.5.12 --no-ri --no-rdoc
     service mailcatcher start
