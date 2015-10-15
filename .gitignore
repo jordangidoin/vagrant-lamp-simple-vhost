@@ -1,2 +1,3 @@
 .vagrant/
 .DS_Store
+vagrant_config_files/apache2/default
