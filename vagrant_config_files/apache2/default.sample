@@ -1,0 +1,47 @@
+
+<VirtualHost *:80>
+        ServerName maliterie.site
+        ServerAlias maliteriech.site
+        ServerAlias magasins.site
+        ServerAdmin webmaster@localhost
+
+        SetEnv APPLICATION_ENV "vagrant"
+
+        DocumentRoot /var/www/vagrant/GFL/www
+        <Directory /var/www/vagrant/GFL/www>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride All
+                Order allow,deny
+                allow from all
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+
+<VirtualHost *:80>
+        ServerName phinx.site
+        ServerAdmin webmaster@localhost
+
+        DocumentRoot /var/www/vagrant/phinx
+        <Directory /var/www/vagrant/phinx>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride All
+                Order allow,deny
+                allow from all
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
