@@ -46,6 +46,7 @@ sed -i '/max_execution_time = 30/c max_execution_time = 160' /etc/php5/apache2/p
 sed -i '/upload_max_filesize = 2M/c upload_max_filesize = 200M' /etc/php5/apache2/php.ini
 sed -i '/post_max_size = 8M/c post_max_size = 208M' /etc/php5/apache2/php.ini
 sed -i '/;sendmail_path =/c sendmail_path = "/usr/local/bin/catchmail"' /etc/php5/apache2/php.ini
+sed -i '/; max_input_vars = 1000/c max_input_vars = 10000' /etc/php5/apache2/php.ini
 
 if [ ! -d /var/www/cache ]; then
     echo " -- SET CACHE FOLDER... -- "
